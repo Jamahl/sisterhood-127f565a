@@ -2,6 +2,7 @@ import { useState } from "react";
 import MoodStatus from "../MoodStatus";
 import MoodCard from "../MoodCard";
 import SisterhoodTabs, { Sisterhood } from "../SisterhoodTabs";
+import NotificationBell from "../NotificationBell";
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -83,11 +84,14 @@ const HomeScreen = () => {
   return (
     <div className="px-5 pb-24">
       {/* Header */}
-      <div className="pt-4 pb-4">
-        <h1 className="font-serif text-2xl font-bold text-foreground">
-          Good morning, <span className="text-gradient">Bella</span> ✨
-        </h1>
-        <p className="text-muted-foreground mt-1">Your sisters are thinking of you</p>
+      <div className="pt-4 pb-4 flex items-start justify-between">
+        <div>
+          <h1 className="font-serif text-2xl font-bold text-foreground">
+            Good morning, <span className="text-gradient">Bella</span> ✨
+          </h1>
+          <p className="text-muted-foreground mt-1">Your sisters are thinking of you</p>
+        </div>
+        <NotificationBell />
       </div>
 
       {/* Sisterhood Tabs */}

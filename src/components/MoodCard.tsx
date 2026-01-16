@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Heart, MessageCircle, Send, Pencil, Trash2, X, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { toast } from "@/hooks/use-toast";
 
 interface Comment {
   id: string;
@@ -52,6 +53,24 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
       ]);
       setNewComment("");
       setHasReplied(true);
+      
+      // Simulate notification for the recipient (in real app, this would be sent to them)
+      toast({
+        title: `💬 Comment sent to ${name}`,
+        description: commentText.length > 40 ? commentText.slice(0, 40) + "..." : commentText,
+      });
+    }
+  };
+
+  const handleToggleLike = () => {
+    const newLikedState = !liked;
+    setLiked(newLikedState);
+    
+    if (newLikedState) {
+      toast({
+        title: `💕 Love sent to ${name}`,
+        description: "They'll feel the warmth!",
+      });
     }
   };
 
@@ -126,7 +145,7 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
           variant={liked ? "default" : "soft"} 
           size="sm" 
           className="flex-1 gap-2"
-          onClick={() => setLiked(!liked)}
+          onClick={handleToggleLike}
         >
           <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
           {liked ? "Loved" : "Send Love"}
