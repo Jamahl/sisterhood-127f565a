@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 interface MobileFrameProps {
   children: ReactNode;
@@ -20,8 +21,14 @@ const MobileFrame = ({ children }: MobileFrameProps) => {
         </div>
         
         {/* Content */}
-        <div className="h-[calc(844px-48px-34px)] overflow-y-auto overflow-x-hidden">
+        <div className="h-[calc(844px-48px-34px)] overflow-y-auto overflow-x-hidden relative">
           {children}
+          {/* In-app toast notifications */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="pointer-events-auto">
+              <Toaster />
+            </div>
+          </div>
         </div>
         
         {/* Home indicator */}
