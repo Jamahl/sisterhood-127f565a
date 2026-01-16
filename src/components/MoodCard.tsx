@@ -1,5 +1,14 @@
-import { Heart, MessageCircle, Gift } from "lucide-react";
+import { useState } from "react";
+import { Heart, MessageCircle, Send } from "lucide-react";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+
+interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  time: string;
+}
 
 interface MoodCardProps {
   name: string;
@@ -9,9 +18,30 @@ interface MoodCardProps {
   cycleDay: string;
   message?: string;
   time: string;
+  sisterhoodName?: string;
 }
 
-const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time }: MoodCardProps) => {
+const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sisterhoodName }: MoodCardProps) => {
+  const [showComments, setShowComments] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [liked, setLiked] = useState(false);
+
+  const handleAddComment = () => {
+    if (newComment.trim() && newComment.length <= 100) {
+      setComments([
+        ...comments,
+        {
+          id: Date.now().toString(),
+          author: "You",
+          text: newComment.trim(),
+          time: "Just now"
+        }
+      ]);
+      setNewComment("");
+    }
+  };
+
   return (
     <div className="bg-card rounded-3xl p-5 shadow-card animate-slide-up border border-border/30">
       <div className="flex items-start gap-4">
@@ -30,12 +60,20 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time }: Mo
             <span className="text-xs text-muted-foreground">{time}</span>
           </div>
           
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
             <span className="text-sm font-medium text-primary">{mood}</span>
             <span className="text-muted-foreground">•</span>
             <span className="text-xs text-muted-foreground bg-lavender/50 px-2 py-0.5 rounded-full">
               {cycleDay}
             </span>
+            {sisterhoodName && (
+              <>
+                <span className="text-muted-foreground">•</span>
+                <span className="text-xs text-muted-foreground bg-sage/30 px-2 py-0.5 rounded-full">
+                  {sisterhoodName}
+                </span>
+              </>
+            )}
           </div>
           
           {message && (
@@ -47,18 +85,64 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time }: Mo
       </div>
       
       <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/50">
-        <Button variant="soft" size="sm" className="flex-1 gap-2">
-          <Heart className="w-4 h-4" />
-          Send Love
+        <Button 
+          variant={liked ? "default" : "soft"} 
+          size="sm" 
+          className="flex-1 gap-2"
+          onClick={() => setLiked(!liked)}
+        >
+          <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
+          {liked ? "Loved" : "Send Love"}
         </Button>
-        <Button variant="lavender" size="sm" className="flex-1 gap-2">
-          <Gift className="w-4 h-4" />
-          Care Package
-        </Button>
-        <Button variant="ghost" size="icon" className="h-10 w-10">
+        <Button 
+          variant={showComments ? "default" : "ghost"} 
+          size="sm" 
+          className="gap-2"
+          onClick={() => setShowComments(!showComments)}
+        >
           <MessageCircle className="w-4 h-4" />
+          {comments.length > 0 && <span>{comments.length}</span>}
         </Button>
       </div>
+
+      {/* Comments Section */}
+      {showComments && (
+        <div className="mt-4 pt-4 border-t border-border/50 space-y-3">
+          {comments.map((comment) => (
+            <div key={comment.id} className="flex gap-2">
+              <div className="flex-1 bg-muted/50 rounded-2xl px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-foreground">{comment.author}</span>
+                  <span className="text-[10px] text-muted-foreground">{comment.time}</span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-0.5">{comment.text}</p>
+              </div>
+            </div>
+          ))}
+          
+          <div className="flex gap-2 items-center">
+            <Input
+              placeholder="Add a reply... (100 char max)"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value.slice(0, 100))}
+              className="flex-1 text-sm rounded-full bg-muted/50 border-0"
+              onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
+            />
+            <Button 
+              size="icon" 
+              variant="soft"
+              onClick={handleAddComment}
+              disabled={!newComment.trim()}
+              className="rounded-full h-10 w-10"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          </div>
+          <p className="text-[10px] text-muted-foreground text-right">
+            {newComment.length}/100
+          </p>
+        </div>
+      )}
     </div>
   );
 };
