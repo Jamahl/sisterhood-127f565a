@@ -6,71 +6,74 @@
 
 @layer base {
   :root {
-    /* Warm, feminine palette */
-    --background: 30 50% 98%;
-    --foreground: 20 25% 20%;
+    /* Soft botanical palette */
+    --background: 90 30% 97%;
+    --foreground: 100 20% 18%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 20 25% 20%;
+    --card: 90 25% 99%;
+    --card-foreground: 100 20% 18%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 25% 20%;
+    --popover: 90 25% 99%;
+    --popover-foreground: 100 20% 18%;
 
-    /* Warm blush coral */
-    --primary: 12 76% 72%;
-    --primary-foreground: 0 0% 100%;
+    /* Soft fern green */
+    --primary: 130 28% 72%;
+    --primary-foreground: 100 20% 15%;
 
-    /* Soft lavender */
-    --secondary: 280 40% 92%;
-    --secondary-foreground: 280 30% 35%;
+    /* Soft clay pink */
+    --secondary: 15 45% 88%;
+    --secondary-foreground: 15 35% 35%;
 
     /* Warm muted tones */
-    --muted: 30 30% 94%;
-    --muted-foreground: 20 15% 50%;
+    --muted: 90 20% 93%;
+    --muted-foreground: 100 15% 45%;
 
-    /* Peach accent */
-    --accent: 25 90% 88%;
-    --accent-foreground: 20 60% 35%;
+    /* Blush accent */
+    --accent: 15 50% 90%;
+    --accent-foreground: 15 40% 30%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 30% 90%;
-    --input: 30 30% 90%;
-    --ring: 12 76% 72%;
+    --border: 90 25% 88%;
+    --input: 90 25% 88%;
+    --ring: 130 28% 65%;
 
     --radius: 1rem;
 
     /* Custom Sisterhood colors */
-    --blush: 12 76% 72%;
-    --blush-light: 12 80% 92%;
-    --coral: 16 85% 68%;
-    --lavender: 280 50% 85%;
-    --lavender-dark: 280 40% 65%;
-    --peach: 25 90% 88%;
-    --cream: 35 50% 96%;
-    --sage: 140 25% 75%;
-    --warm-gray: 20 10% 40%;
+    --blush: 15 45% 80%;
+    --blush-light: 15 50% 92%;
+    --coral: 12 60% 75%;
+    --lavender: 280 30% 88%;
+    --lavender-dark: 280 25% 70%;
+    --peach: 20 55% 88%;
+    --cream: 45 40% 96%;
+    --sage: 130 28% 72%;
+    --sage-light: 130 30% 85%;
+    --sage-dark: 130 25% 55%;
+    --warm-gray: 100 10% 40%;
+    --clay: 15 45% 80%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(12 76% 72%), hsl(16 85% 68%));
-    --gradient-lavender: linear-gradient(135deg, hsl(280 50% 85%), hsl(300 40% 88%));
-    --gradient-sunset: linear-gradient(180deg, hsl(25 90% 88%), hsl(12 76% 72%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(30 50% 98%));
+    --gradient-primary: linear-gradient(135deg, hsl(130 28% 72%), hsl(130 25% 62%));
+    --gradient-sage: linear-gradient(135deg, hsl(130 30% 85%), hsl(130 28% 72%));
+    --gradient-blush: linear-gradient(135deg, hsl(15 45% 88%), hsl(15 50% 82%));
+    --gradient-card: linear-gradient(145deg, hsl(90 25% 99%), hsl(90 30% 97%));
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(12 76% 72% / 0.15);
-    --shadow-card: 0 8px 32px -8px hsl(20 25% 20% / 0.1);
-    --shadow-glow: 0 0 40px hsl(12 76% 72% / 0.2);
+    --shadow-soft: 0 4px 20px -4px hsl(130 28% 50% / 0.15);
+    --shadow-card: 0 8px 32px -8px hsl(100 20% 18% / 0.08);
+    --shadow-glow: 0 0 40px hsl(130 28% 72% / 0.25);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 90 30% 97%;
+    --sidebar-foreground: 100 20% 26%;
+    --sidebar-primary: 130 28% 30%;
+    --sidebar-primary-foreground: 90 30% 97%;
+    --sidebar-accent: 90 20% 93%;
+    --sidebar-accent-foreground: 130 28% 25%;
+    --sidebar-border: 90 25% 88%;
+    --sidebar-ring: 130 28% 65%;
   }
 }
 
@@ -98,12 +101,12 @@
     background: var(--gradient-primary);
   }
 
-  .gradient-lavender {
-    background: var(--gradient-lavender);
+  .gradient-sage {
+    background: var(--gradient-sage);
   }
 
-  .gradient-sunset {
-    background: var(--gradient-sunset);
+  .gradient-blush {
+    background: var(--gradient-blush);
   }
 
   .shadow-soft {

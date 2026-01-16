@@ -6,7 +6,7 @@ interface MobileFrameProps {
 
 const MobileFrame = ({ children }: MobileFrameProps) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blush-light via-lavender/30 to-peach flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-sage-light via-cream to-blush-light flex items-center justify-center p-4">
       <div className="w-full max-w-[390px] min-h-[844px] bg-background rounded-[3rem] shadow-2xl overflow-hidden relative border-[8px] border-foreground/10">
         {/* Status bar */}
         <div className="h-12 bg-background flex items-center justify-between px-8 pt-2">
