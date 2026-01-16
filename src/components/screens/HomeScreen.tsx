@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import MoodStatus from "../MoodStatus";
 import MoodCard from "../MoodCard";
 import SisterhoodTabs, { Sisterhood } from "../SisterhoodTabs";
 import NotificationBell from "../NotificationBell";
+import NotificationPanel from "../NotificationPanel";
+import { useNotifications } from "@/hooks/useNotifications";
+import { toast } from "@/hooks/use-toast";
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState("all");
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [highlightedPostId, setHighlightedPostId] = useState<string | null>(null);
+  const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const { setSelectedPostId } = useNotifications();
 
   const sisterhoods: Sisterhood[] = [
     { id: "crimson-wave", name: "Crimson Wave", memberCount: 4, emoji: "🌊" },
@@ -81,6 +88,47 @@ const HomeScreen = () => {
 
   const activeSisterhood = sisterhoods.find(s => s.id === activeTab);
 
+  const handleMoodShare = (mood: { emoji: string; label: string }, comment?: string) => {
+    toast({
+      title: `${mood.emoji} Mood shared with your sisters!`,
+      description: comment || `You're feeling ${mood.label.toLowerCase()}`,
+    });
+  };
+
+  const handleNotificationClick = (postId: string) => {
+    setShowNotifications(false);
+    setActiveTab("all"); // Show all posts to find the target
+    setHighlightedPostId(postId);
+    setSelectedPostId(postId);
+    
+    // Scroll to the post after a brief delay
+    setTimeout(() => {
+      const postElement = postRefs.current.get(postId);
+      if (postElement) {
+        postElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 100);
+
+    // Clear highlight after animation
+    setTimeout(() => {
+      setHighlightedPostId(null);
+    }, 2000);
+  };
+
+  // Clear highlight when changing tabs
+  useEffect(() => {
+    setHighlightedPostId(null);
+  }, [activeTab]);
+
+  if (showNotifications) {
+    return (
+      <NotificationPanel 
+        onClose={() => setShowNotifications(false)}
+        onNotificationClick={handleNotificationClick}
+      />
+    );
+  }
+
   return (
     <div className="px-5 pb-24">
       {/* Header */}
@@ -91,7 +139,7 @@ const HomeScreen = () => {
           </h1>
           <p className="text-muted-foreground mt-1">Your sisters are thinking of you</p>
         </div>
-        <NotificationBell />
+        <NotificationBell onClick={() => setShowNotifications(true)} />
       </div>
 
       {/* Sisterhood Tabs */}
@@ -105,7 +153,7 @@ const HomeScreen = () => {
 
       {/* Mood Status */}
       <div className="mb-6">
-        <MoodStatus />
+        <MoodStatus onMoodSelect={handleMoodShare} />
       </div>
 
       {/* Feed */}
@@ -117,11 +165,22 @@ const HomeScreen = () => {
         </h2>
         
         {filteredFriends.map((friend) => (
-          <MoodCard 
-            key={friend.id} 
-            {...friend} 
-            sisterhoodName={activeTab === "all" ? friend.sisterhoodName : undefined}
-          />
+          <div 
+            key={friend.id}
+            ref={(el) => {
+              if (el) postRefs.current.set(friend.id, el);
+            }}
+            className={`transition-all duration-500 ${
+              highlightedPostId === friend.id 
+                ? "ring-2 ring-primary ring-offset-2 rounded-3xl" 
+                : ""
+            }`}
+          >
+            <MoodCard 
+              {...friend} 
+              sisterhoodName={activeTab === "all" ? friend.sisterhoodName : undefined}
+            />
+          </div>
         ))}
 
         {filteredFriends.length === 0 && (
