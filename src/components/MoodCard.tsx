@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Send } from "lucide-react";
+import { Heart, MessageCircle, Send, Pencil, Trash2, X, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -26,6 +26,8 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [liked, setLiked] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState("");
 
   const handleAddComment = () => {
     if (newComment.trim() && newComment.length <= 100) {
@@ -40,6 +42,30 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
       ]);
       setNewComment("");
     }
+  };
+
+  const handleEditComment = (comment: Comment) => {
+    setEditingId(comment.id);
+    setEditText(comment.text);
+  };
+
+  const handleSaveEdit = (id: string) => {
+    if (editText.trim() && editText.length <= 100) {
+      setComments(comments.map(c => 
+        c.id === id ? { ...c, text: editText.trim() } : c
+      ));
+      setEditingId(null);
+      setEditText("");
+    }
+  };
+
+  const handleDeleteComment = (id: string) => {
+    setComments(comments.filter(c => c.id !== id));
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditText("");
   };
 
   return (
@@ -111,11 +137,68 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
           {comments.map((comment) => (
             <div key={comment.id} className="flex gap-2">
               <div className="flex-1 bg-muted/50 rounded-2xl px-3 py-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-foreground">{comment.author}</span>
-                  <span className="text-[10px] text-muted-foreground">{comment.time}</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-0.5">{comment.text}</p>
+                {editingId === comment.id ? (
+                  <div className="space-y-2">
+                    <Input
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value.slice(0, 100))}
+                      className="text-sm rounded-xl bg-background border-border"
+                      autoFocus
+                    />
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-muted-foreground">{editText.length}/100</span>
+                      <div className="flex gap-1">
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          className="h-6 w-6"
+                          onClick={handleCancelEdit}
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                        <Button 
+                          size="icon" 
+                          variant="soft" 
+                          className="h-6 w-6"
+                          onClick={() => handleSaveEdit(comment.id)}
+                          disabled={!editText.trim()}
+                        >
+                          <Check className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-foreground">{comment.author}</span>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px] text-muted-foreground">{comment.time}</span>
+                        {comment.author === "You" && (
+                          <>
+                            <Button 
+                              size="icon" 
+                              variant="ghost" 
+                              className="h-5 w-5 opacity-60 hover:opacity-100"
+                              onClick={() => handleEditComment(comment)}
+                            >
+                              <Pencil className="w-2.5 h-2.5" />
+                            </Button>
+                            <Button 
+                              size="icon" 
+                              variant="ghost" 
+                              className="h-5 w-5 opacity-60 hover:opacity-100 hover:text-destructive"
+                              onClick={() => handleDeleteComment(comment.id)}
+                            >
+                              <Trash2 className="w-2.5 h-2.5" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-0.5">{comment.text}</p>
+                  </>
+                )}
               </div>
             </div>
           ))}
