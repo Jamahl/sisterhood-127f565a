@@ -28,6 +28,7 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
   const [liked, setLiked] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
+  const [hasReplied, setHasReplied] = useState(false);
 
   const quickReplies = [
     { text: "I'm here for you 💕", color: "bg-lavender/60" },
@@ -50,6 +51,7 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
         }
       ]);
       setNewComment("");
+      setHasReplied(true);
     }
   };
 
@@ -212,19 +214,21 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
             </div>
           ))}
           
-          {/* Quick Replies */}
-          <div className="flex flex-wrap gap-2">
-            {quickReplies.map((reply, index) => (
-              <button
-                key={index}
-                onClick={() => handleAddComment(reply.text)}
-                className={`${reply.color} px-3 py-1.5 rounded-full text-xs font-medium text-foreground/80 
-                  hover:scale-105 hover:shadow-soft transition-all duration-200 active:scale-95`}
-              >
-                {reply.text}
-              </button>
-            ))}
-          </div>
+          {/* Quick Replies - hide after user has replied */}
+          {!hasReplied && (
+            <div className="flex flex-wrap gap-2">
+              {quickReplies.map((reply, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleAddComment(reply.text)}
+                  className={`${reply.color} px-3 py-1.5 rounded-full text-xs font-medium text-foreground/80 
+                    hover:scale-105 hover:shadow-soft transition-all duration-200 active:scale-95`}
+                >
+                  {reply.text}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="flex gap-2 items-center">
             <Input
