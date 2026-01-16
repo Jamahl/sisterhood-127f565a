@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 interface MobileFrameProps {
   children: ReactNode;
@@ -8,6 +9,7 @@ const MobileFrame = ({ children }: MobileFrameProps) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sage-light via-cream to-blush-light flex items-center justify-center p-4">
       <div className="w-full max-w-[390px] min-h-[844px] bg-background rounded-[3rem] shadow-2xl overflow-hidden relative border-[8px] border-foreground/10">
+        <Toaster />
         {/* Status bar */}
         <div className="h-12 bg-background flex items-center justify-between px-8 pt-2">
           <span className="text-xs font-medium text-muted-foreground">9:41</span>
@@ -23,7 +25,6 @@ const MobileFrame = ({ children }: MobileFrameProps) => {
         <div className="h-[calc(844px-48px-34px)] overflow-y-auto overflow-x-hidden">
           {children}
         </div>
-        
         {/* Home indicator */}
         <div className="h-[34px] flex items-center justify-center">
           <div className="w-32 h-1 bg-foreground/20 rounded-full" />
