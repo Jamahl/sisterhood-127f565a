@@ -29,14 +29,23 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
 
-  const handleAddComment = () => {
-    if (newComment.trim() && newComment.length <= 100) {
+  const quickReplies = [
+    { text: "I'm here for you 💕", color: "bg-lavender/60" },
+    { text: "Thinking of you 💭", color: "bg-sage/40" },
+    { text: "You are loved 🤍", color: "bg-secondary/60" },
+    { text: "Sending hugs 🫂", color: "bg-peach/60" },
+    { text: "You've got this 💪", color: "bg-blush-light" },
+  ];
+
+  const handleAddComment = (text?: string) => {
+    const commentText = text || newComment.trim();
+    if (commentText && commentText.length <= 100) {
       setComments([
         ...comments,
         {
           id: Date.now().toString(),
           author: "You",
-          text: newComment.trim(),
+          text: commentText,
           time: "Just now"
         }
       ]);
@@ -203,9 +212,23 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
             </div>
           ))}
           
+          {/* Quick Replies */}
+          <div className="flex flex-wrap gap-2">
+            {quickReplies.map((reply, index) => (
+              <button
+                key={index}
+                onClick={() => handleAddComment(reply.text)}
+                className={`${reply.color} px-3 py-1.5 rounded-full text-xs font-medium text-foreground/80 
+                  hover:scale-105 hover:shadow-soft transition-all duration-200 active:scale-95`}
+              >
+                {reply.text}
+              </button>
+            ))}
+          </div>
+
           <div className="flex gap-2 items-center">
             <Input
-              placeholder="Add a reply... (100 char max)"
+              placeholder="Or type your own..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value.slice(0, 100))}
               className="flex-1 text-sm rounded-full bg-muted/50 border-0"
@@ -214,7 +237,7 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
             <Button 
               size="icon" 
               variant="soft"
-              onClick={handleAddComment}
+              onClick={() => handleAddComment()}
               disabled={!newComment.trim()}
               className="rounded-full h-10 w-10"
             >
