@@ -6,74 +6,75 @@
 
 @layer base {
   :root {
-    /* Soft botanical palette */
-    --background: 90 30% 97%;
-    --foreground: 100 20% 18%;
+    /* Soft botanical palette - pastel greens & pinks */
+    --background: 80 30% 96%;
+    --foreground: 90 15% 25%;
 
-    --card: 90 25% 99%;
-    --card-foreground: 100 20% 18%;
+    --card: 80 25% 98%;
+    --card-foreground: 90 15% 25%;
 
-    --popover: 90 25% 99%;
-    --popover-foreground: 100 20% 18%;
+    --popover: 80 25% 98%;
+    --popover-foreground: 90 15% 25%;
 
-    /* Soft fern green */
-    --primary: 130 28% 72%;
-    --primary-foreground: 100 20% 15%;
+    /* Sage green - A0AB89 */
+    --primary: 78 18% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Soft clay pink */
-    --secondary: 15 45% 88%;
-    --secondary-foreground: 15 35% 35%;
+    /* Soft blush pink - EFC0BC */
+    --secondary: 5 55% 84%;
+    --secondary-foreground: 5 30% 35%;
 
     /* Warm muted tones */
-    --muted: 90 20% 93%;
-    --muted-foreground: 100 15% 45%;
+    --muted: 80 20% 92%;
+    --muted-foreground: 90 10% 45%;
 
-    /* Blush accent */
-    --accent: 15 50% 90%;
-    --accent-foreground: 15 40% 30%;
+    /* Light pink accent - F6E5E7 */
+    --accent: 350 35% 93%;
+    --accent-foreground: 5 30% 35%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 90 25% 88%;
-    --input: 90 25% 88%;
-    --ring: 130 28% 65%;
+    --border: 80 20% 88%;
+    --input: 80 20% 88%;
+    --ring: 78 18% 55%;
 
     --radius: 1rem;
 
     /* Custom Sisterhood colors */
-    --blush: 15 45% 80%;
-    --blush-light: 15 50% 92%;
-    --coral: 12 60% 75%;
-    --lavender: 280 30% 88%;
-    --lavender-dark: 280 25% 70%;
-    --peach: 20 55% 88%;
-    --cream: 45 40% 96%;
-    --sage: 130 28% 72%;
-    --sage-light: 130 30% 85%;
-    --sage-dark: 130 25% 55%;
-    --warm-gray: 100 10% 40%;
-    --clay: 15 45% 80%;
+    --blush: 5 55% 84%;
+    --blush-light: 350 35% 93%;
+    --coral: 8 52% 75%;
+    --lavender: 280 25% 90%;
+    --lavender-dark: 280 20% 72%;
+    --peach: 350 35% 93%;
+    --cream: 45 35% 96%;
+    --sage: 78 18% 60%;
+    --sage-light: 78 25% 80%;
+    --sage-dark: 78 20% 45%;
+    --warm-gray: 90 8% 45%;
+    --clay: 8 52% 75%;
+    --rose: 5 55% 84%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(130 28% 72%), hsl(130 25% 62%));
-    --gradient-sage: linear-gradient(135deg, hsl(130 30% 85%), hsl(130 28% 72%));
-    --gradient-blush: linear-gradient(135deg, hsl(15 45% 88%), hsl(15 50% 82%));
-    --gradient-card: linear-gradient(145deg, hsl(90 25% 99%), hsl(90 30% 97%));
+    --gradient-primary: linear-gradient(135deg, hsl(78 25% 80%), hsl(78 18% 60%));
+    --gradient-sage: linear-gradient(135deg, hsl(78 25% 80%), hsl(78 18% 60%));
+    --gradient-blush: linear-gradient(135deg, hsl(350 35% 93%), hsl(5 55% 84%));
+    --gradient-card: linear-gradient(145deg, hsl(80 25% 98%), hsl(80 30% 96%));
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(130 28% 50% / 0.15);
-    --shadow-card: 0 8px 32px -8px hsl(100 20% 18% / 0.08);
-    --shadow-glow: 0 0 40px hsl(130 28% 72% / 0.25);
+    --shadow-soft: 0 4px 20px -4px hsl(78 18% 50% / 0.15);
+    --shadow-card: 0 8px 32px -8px hsl(90 15% 25% / 0.08);
+    --shadow-glow: 0 0 40px hsl(78 18% 60% / 0.2);
 
-    --sidebar-background: 90 30% 97%;
-    --sidebar-foreground: 100 20% 26%;
-    --sidebar-primary: 130 28% 30%;
-    --sidebar-primary-foreground: 90 30% 97%;
-    --sidebar-accent: 90 20% 93%;
-    --sidebar-accent-foreground: 130 28% 25%;
-    --sidebar-border: 90 25% 88%;
-    --sidebar-ring: 130 28% 65%;
+    --sidebar-background: 80 30% 96%;
+    --sidebar-foreground: 90 15% 30%;
+    --sidebar-primary: 78 18% 40%;
+    --sidebar-primary-foreground: 80 30% 96%;
+    --sidebar-accent: 80 20% 92%;
+    --sidebar-accent-foreground: 78 18% 35%;
+    --sidebar-border: 80 20% 88%;
+    --sidebar-ring: 78 18% 55%;
   }
 }
 
