@@ -1,7 +1,12 @@
-import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight, Droplets } from "lucide-react";
 import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import CycleTracker from "../CycleTracker";
 
 const ProfileScreen = () => {
+  const [cycleDialogOpen, setCycleDialogOpen] = useState(false);
+
   const stats = [
     { icon: Heart, label: "Love Sent", value: "128" },
     { icon: Gift, label: "Gifts Given", value: "12" },
@@ -10,7 +15,7 @@ const ProfileScreen = () => {
 
   const menuItems = [
     { label: "My Care Package Wishlist", icon: Gift },
-    { label: "Cycle Settings", icon: Calendar },
+    { label: "Cycle Settings", icon: Droplets, action: () => setCycleDialogOpen(true) },
     { label: "Notification Preferences", icon: Settings },
     { label: "Privacy & Sharing", icon: Settings },
   ];
@@ -49,6 +54,33 @@ const ProfileScreen = () => {
         </div>
       </div>
 
+      {/* Quick Cycle Card */}
+      <Dialog open={cycleDialogOpen} onOpenChange={setCycleDialogOpen}>
+        <DialogTrigger asChild>
+          <button className="w-full bg-gradient-to-r from-rose/20 to-blush-light p-4 rounded-2xl mb-6 text-left shadow-soft hover:shadow-card transition-shadow">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-rose/30 rounded-xl">
+                <Droplets className="w-5 h-5 text-rose" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-medium text-foreground">Cycle Tracker</h3>
+                <p className="text-xs text-muted-foreground">Log your period & see predictions</p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-muted-foreground" />
+            </div>
+          </button>
+        </DialogTrigger>
+        <DialogContent className="max-w-sm mx-auto max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Droplets className="w-5 h-5 text-rose" />
+              Cycle Tracker
+            </DialogTitle>
+          </DialogHeader>
+          <CycleTracker onClose={() => setCycleDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         {stats.map((stat) => {
@@ -70,6 +102,7 @@ const ProfileScreen = () => {
           return (
             <button
               key={item.label}
+              onClick={item.action}
               className={`w-full flex items-center gap-4 p-4 hover:bg-muted/50 transition-colors ${
                 index !== menuItems.length - 1 ? "border-b border-border/50" : ""
               }`}
