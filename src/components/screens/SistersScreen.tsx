@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Plus, Search, MoreVertical, Link2, MessageCircle, Phone, UserPlus, UserMinus, Crown, X, ChevronRight } from "lucide-react";
+import { Plus, Search, MoreVertical, Link2, MessageCircle, Phone, UserPlus, UserMinus, Crown, X, ChevronRight, Cake, Calendar } from "lucide-react";
+import { format, isSameMonth, addMonths, differenceInDays } from "date-fns";
 import { Button } from "../ui/button";
 import CircleMember from "../CircleMember";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
@@ -13,6 +14,7 @@ interface Sister {
   status: string;
   cycleDay?: string;
   isAdmin?: boolean;
+  birthday?: Date;
 }
 
 interface Sisterhood {
@@ -39,9 +41,9 @@ const SistersScreen = () => {
       emoji: "🌊",
       isAdmin: true,
       members: [
-        { id: "1", name: "Sarah Johnson", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", status: "Feeling low today", cycleDay: "2", isAdmin: true },
-        { id: "2", name: "Emma Wilson", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", status: "Grateful and happy", cycleDay: "14" },
-        { id: "3", name: "Maya Chen", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", status: "Taking it easy", cycleDay: "1" },
+        { id: "1", name: "Sarah Johnson", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", status: "Feeling low today", cycleDay: "2", isAdmin: true, birthday: new Date(1995, 0, 25) },
+        { id: "2", name: "Emma Wilson", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", status: "Grateful and happy", cycleDay: "14", birthday: new Date(1993, 1, 14) },
+        { id: "3", name: "Maya Chen", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", status: "Taking it easy", cycleDay: "1", birthday: new Date(1997, 6, 8) },
       ]
     },
     {
@@ -50,19 +52,42 @@ const SistersScreen = () => {
       emoji: "🍀",
       isAdmin: false,
       members: [
-        { id: "4", name: "Olivia Davis", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", status: "Crushing it at work!", cycleDay: "22", isAdmin: true },
-        { id: "5", name: "Mom", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop", status: "Always here for you" },
+        { id: "4", name: "Olivia Davis", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", status: "Crushing it at work!", cycleDay: "22", isAdmin: true, birthday: new Date(1994, 3, 22) },
+        { id: "5", name: "Mom", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop", status: "Always here for you", birthday: new Date(1965, 8, 10) },
       ]
     }
   ]);
 
   const allMembers: Sister[] = [
-    { id: "1", name: "Sarah Johnson", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", status: "Feeling low today", cycleDay: "2" },
-    { id: "2", name: "Emma Wilson", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", status: "Grateful and happy", cycleDay: "14" },
-    { id: "3", name: "Maya Chen", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", status: "Taking it easy", cycleDay: "1" },
-    { id: "4", name: "Olivia Davis", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", status: "Crushing it at work!", cycleDay: "22" },
-    { id: "5", name: "Mom", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop", status: "Always here for you" },
+    { id: "1", name: "Sarah Johnson", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop", status: "Feeling low today", cycleDay: "2", birthday: new Date(1995, 0, 25) },
+    { id: "2", name: "Emma Wilson", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", status: "Grateful and happy", cycleDay: "14", birthday: new Date(1993, 1, 14) },
+    { id: "3", name: "Maya Chen", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", status: "Taking it easy", cycleDay: "1", birthday: new Date(1997, 6, 8) },
+    { id: "4", name: "Olivia Davis", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", status: "Crushing it at work!", cycleDay: "22", birthday: new Date(1994, 3, 22) },
+    { id: "5", name: "Mom", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop", status: "Always here for you", birthday: new Date(1965, 8, 10) },
   ];
+
+  // Get upcoming birthdays (next 30 days)
+  const getUpcomingBirthdays = () => {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    
+    return allMembers
+      .filter(member => member.birthday)
+      .map(member => {
+        const birthday = member.birthday!;
+        const thisYearBirthday = new Date(currentYear, birthday.getMonth(), birthday.getDate());
+        const nextYearBirthday = new Date(currentYear + 1, birthday.getMonth(), birthday.getDate());
+        
+        const upcomingBirthday = thisYearBirthday >= today ? thisYearBirthday : nextYearBirthday;
+        const daysUntil = differenceInDays(upcomingBirthday, today);
+        
+        return { ...member, upcomingBirthday, daysUntil };
+      })
+      .filter(member => member.daysUntil <= 30 && member.daysUntil >= 0)
+      .sort((a, b) => a.daysUntil - b.daysUntil);
+  };
+
+  const upcomingBirthdays = getUpcomingBirthdays();
 
   const selectedSisterhood = sisterhoods.find(s => s.id === activeSisterhood);
 
@@ -210,6 +235,40 @@ const SistersScreen = () => {
           <X className="w-4 h-4" />
           <span className="text-sm font-medium">Back to all sisterhoods</span>
         </button>
+      )}
+
+      {/* Upcoming Birthdays - subtle card */}
+      {!activeSisterhood && upcomingBirthdays.length > 0 && (
+        <div className="bg-gradient-to-r from-lavender/30 to-blush-light/50 rounded-2xl p-3 mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Cake className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-foreground">Upcoming Birthdays</span>
+          </div>
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            {upcomingBirthdays.slice(0, 4).map((member) => (
+              <div 
+                key={member.id} 
+                className="flex items-center gap-2 bg-card/80 rounded-xl px-3 py-2 shrink-0"
+              >
+                <img 
+                  src={member.avatar} 
+                  alt={member.name} 
+                  className="w-8 h-8 rounded-lg object-cover"
+                />
+                <div>
+                  <p className="text-xs font-medium text-foreground">{member.name.split(' ')[0]}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {member.daysUntil === 0 
+                      ? "Today! 🎂" 
+                      : member.daysUntil === 1 
+                        ? "Tomorrow" 
+                        : `${member.daysUntil} days`}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Search */}

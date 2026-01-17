@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight, Droplets, MapPin, Bell, Lock } from "lucide-react";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Edit2, Gift, Heart, Calendar, ChevronRight, Droplets, MapPin, Bell, Lock } from "lucide-react";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import CycleTracker from "../CycleTracker";
 import WishlistScreen from "./WishlistScreen";
 import AddressScreen from "./AddressScreen";
@@ -12,7 +11,7 @@ import EditProfileScreen from "./EditProfileScreen";
 type SubScreen = null | "wishlist" | "address" | "notifications" | "privacy" | "editProfile";
 
 const ProfileScreen = () => {
-  const [cycleDialogOpen, setCycleDialogOpen] = useState(false);
+  const [cycleDrawerOpen, setCycleDrawerOpen] = useState(false);
   const [activeSubScreen, setActiveSubScreen] = useState<SubScreen>(null);
 
   const stats = [
@@ -23,7 +22,7 @@ const ProfileScreen = () => {
 
   const menuItems = [
     { label: "My Gift Wishlist", icon: Gift, action: () => setActiveSubScreen("wishlist") },
-    { label: "Cycle Settings", icon: Droplets, action: () => setCycleDialogOpen(true) },
+    { label: "Cycle Settings", icon: Droplets, action: () => setCycleDrawerOpen(true) },
     { label: "My Address", icon: MapPin, action: () => setActiveSubScreen("address") },
     { label: "Notification Preferences", icon: Bell, action: () => setActiveSubScreen("notifications") },
     { label: "Privacy & Sharing", icon: Lock, action: () => setActiveSubScreen("privacy") },
@@ -48,13 +47,6 @@ const ProfileScreen = () => {
 
   return (
     <div className="px-5 pb-24">
-      {/* Header */}
-      <div className="pt-4 pb-2 flex items-center justify-end">
-        <Button variant="ghost" size="icon">
-          <Settings className="w-5 h-5" />
-        </Button>
-      </div>
-
       {/* Profile Card */}
       <div className="bg-card rounded-3xl p-6 shadow-card text-center mb-6">
         <div className="relative inline-block">
@@ -84,31 +76,36 @@ const ProfileScreen = () => {
       </div>
 
       {/* Quick Cycle Card */}
-      <Dialog open={cycleDialogOpen} onOpenChange={setCycleDialogOpen}>
-        <DialogTrigger asChild>
-          <button className="w-full bg-gradient-to-r from-rose/20 to-blush-light p-4 rounded-2xl mb-6 text-left shadow-soft hover:shadow-card transition-shadow">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-rose/30 rounded-xl">
-                <Droplets className="w-5 h-5 text-rose" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-medium text-foreground">Cycle Tracker</h3>
-                <p className="text-xs text-muted-foreground">Log your period & see predictions</p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground" />
-            </div>
-          </button>
-        </DialogTrigger>
-        <DialogContent className="max-w-sm mx-auto max-h-[85vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+      <button 
+        onClick={() => setCycleDrawerOpen(true)}
+        className="w-full bg-gradient-to-r from-rose/20 to-blush-light p-4 rounded-2xl mb-6 text-left shadow-soft hover:shadow-card transition-shadow"
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-rose/30 rounded-xl">
+            <Droplets className="w-5 h-5 text-rose" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-medium text-foreground">Cycle Tracker</h3>
+            <p className="text-xs text-muted-foreground">Log your period & see predictions</p>
+          </div>
+          <ChevronRight className="w-5 h-5 text-muted-foreground" />
+        </div>
+      </button>
+
+      {/* Cycle Tracker Drawer */}
+      <Drawer open={cycleDrawerOpen} onOpenChange={setCycleDrawerOpen}>
+        <DrawerContent className="rounded-t-3xl" style={{ position: "absolute" }}>
+          <DrawerHeader>
+            <DrawerTitle className="flex items-center gap-2">
               <Droplets className="w-5 h-5 text-rose" />
               Cycle Tracker
-            </DialogTitle>
-          </DialogHeader>
-          <CycleTracker onClose={() => setCycleDialogOpen(false)} />
-        </DialogContent>
-      </Dialog>
+            </DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4 pb-6">
+            <CycleTracker onClose={() => setCycleDrawerOpen(false)} />
+          </div>
+        </DrawerContent>
+      </Drawer>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-6">
