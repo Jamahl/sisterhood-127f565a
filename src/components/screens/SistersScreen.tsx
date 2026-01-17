@@ -3,7 +3,6 @@ import { Plus, Search, MoreVertical, Link2, MessageCircle, Phone, UserPlus, User
 import { Button } from "../ui/button";
 import CircleMember from "../CircleMember";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -172,75 +171,9 @@ const SistersScreen = () => {
         </div>
         <div className="flex gap-2">
           {activeSisterhood && selectedSisterhood?.isAdmin && (
-            <Sheet open={showManageSheet} onOpenChange={setShowManageSheet}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <MoreVertical className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="bottom" className="rounded-t-3xl">
-                <SheetHeader>
-                  <SheetTitle className="flex items-center gap-2">
-                    <span>{selectedSisterhood.emoji}</span>
-                    Manage {selectedSisterhood.name}
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="py-4 space-y-3">
-                  <button 
-                    onClick={() => {
-                      setShowManageSheet(false);
-                      setShowInviteDialog(true);
-                    }}
-                    className="w-full flex items-center gap-4 p-4 bg-card rounded-2xl hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="p-2 bg-blush-light rounded-xl">
-                      <UserPlus className="w-5 h-5 text-primary" />
-                    </div>
-                    <span className="font-medium">Add Sisters</span>
-                    <ChevronRight className="w-5 h-5 ml-auto text-muted-foreground" />
-                  </button>
-                  
-                  <div className="bg-card rounded-2xl overflow-hidden">
-                    <p className="px-4 pt-3 pb-2 text-sm font-medium text-muted-foreground">Members</p>
-                    {selectedSisterhood.members.map((member) => (
-                      <div key={member.id} className="flex items-center gap-3 p-4 border-t border-border/50">
-                        <img 
-                          src={member.avatar} 
-                          alt={member.name}
-                          className="w-10 h-10 rounded-xl object-cover"
-                        />
-                        <div className="flex-1">
-                          <p className="font-medium text-foreground">{member.name}</p>
-                          {member.isAdmin && (
-                            <span className="text-xs text-primary flex items-center gap-1">
-                              <Crown className="w-3 h-3" /> Admin
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleMakeAdmin(member.id)}
-                            className="text-xs"
-                          >
-                            <Crown className={cn("w-4 h-4", member.isAdmin && "text-primary")} />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleRemoveSister(member.id)}
-                            className="text-xs text-destructive"
-                          >
-                            <UserMinus className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <Button variant="ghost" size="icon" onClick={() => setShowManageSheet(true)}>
+              <MoreVertical className="w-5 h-5" />
+            </Button>
           )}
           <Button variant="gradient" size="icon" onClick={() => setShowCreateDialog(true)}>
             <Plus className="w-5 h-5" />
@@ -298,9 +231,74 @@ const SistersScreen = () => {
         ))}
       </div>
 
+      {/* Manage Sisterhood Bottom Sheet (mobile) */}
+      {activeSisterhood && selectedSisterhood?.isAdmin && (
+        <Drawer open={showManageSheet} onOpenChange={setShowManageSheet}>
+          <DrawerContent className="rounded-t-3xl" style={{ position: "absolute" }}>
+            <DrawerHeader>
+              <DrawerTitle className="flex items-center gap-2">
+                <span>{selectedSisterhood.emoji}</span>
+                Manage {selectedSisterhood.name}
+              </DrawerTitle>
+            </DrawerHeader>
+
+            <div className="px-4 pb-6 space-y-3">
+              <button
+                onClick={() => {
+                  setShowManageSheet(false);
+                  setShowInviteDialog(true);
+                }}
+                className="w-full flex items-center gap-4 p-4 bg-card rounded-2xl hover:bg-muted/50 transition-colors"
+              >
+                <div className="p-2 bg-blush-light rounded-xl">
+                  <UserPlus className="w-5 h-5 text-primary" />
+                </div>
+                <span className="font-medium">Add Sisters</span>
+                <ChevronRight className="w-5 h-5 ml-auto text-muted-foreground" />
+              </button>
+
+              <div className="bg-card rounded-2xl overflow-hidden">
+                <p className="px-4 pt-3 pb-2 text-sm font-medium text-muted-foreground">Members</p>
+                {selectedSisterhood.members.map((member) => (
+                  <div key={member.id} className="flex items-center gap-3 p-4 border-t border-border/50">
+                    <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-xl object-cover" />
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground">{member.name}</p>
+                      {member.isAdmin && (
+                        <span className="text-xs text-primary flex items-center gap-1">
+                          <Crown className="w-3 h-3" /> Admin
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleMakeAdmin(member.id)}
+                        className="text-xs"
+                      >
+                        <Crown className={cn("w-4 h-4", member.isAdmin && "text-primary")} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveSister(member.id)}
+                        className="text-xs text-destructive"
+                      >
+                        <UserMinus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      )}
+
       {/* Create Sisterhood Bottom Sheet */}
       <Drawer open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DrawerContent className="rounded-t-3xl">
+        <DrawerContent className="rounded-t-3xl" style={{ position: "absolute" }}>
           <DrawerHeader>
             <DrawerTitle>Create a Sisterhood</DrawerTitle>
           </DrawerHeader>
@@ -315,9 +313,7 @@ const SistersScreen = () => {
                     onClick={() => setNewSisterhoodEmoji(emoji)}
                     className={cn(
                       "w-10 h-10 rounded-xl text-xl flex items-center justify-center transition-all",
-                      newSisterhoodEmoji === emoji
-                        ? "bg-primary/20 ring-2 ring-primary"
-                        : "bg-muted hover:bg-muted/80",
+                      newSisterhoodEmoji === emoji ? "bg-primary/20 ring-2 ring-primary" : "bg-muted hover:bg-muted/80",
                     )}
                   >
                     {emoji}
@@ -351,7 +347,7 @@ const SistersScreen = () => {
 
       {/* Invite Sisters Bottom Sheet */}
       <Drawer open={showInviteDialog} onOpenChange={setShowInviteDialog}>
-        <DrawerContent className="rounded-t-3xl">
+        <DrawerContent className="rounded-t-3xl" style={{ position: "absolute" }}>
           <DrawerHeader>
             <DrawerTitle className="flex items-center gap-2">
               <span>{selectedSisterhood?.emoji || newSisterhoodEmoji}</span>
