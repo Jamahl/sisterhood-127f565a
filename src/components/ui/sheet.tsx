@@ -5,25 +5,47 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const Sheet = SheetPrimitive.Root;
+const SheetContainerContext = React.createContext<HTMLElement | null>(null);
+
+const Sheet = (props: React.ComponentProps<typeof SheetPrimitive.Root>) => {
+  const [container, setContainer] = React.useState<HTMLElement | null>(() => {
+    if (typeof document === "undefined") return null;
+    return document.querySelector('[data-mobile-frame="true"]') as HTMLElement | null;
+  });
+
+  React.useLayoutEffect(() => {
+    const el = document.querySelector('[data-mobile-frame="true"]') as HTMLElement | null;
+    if (el) setContainer(el);
+  }, []);
+
+  return (
+    <SheetContainerContext.Provider value={container}>
+      <SheetPrimitive.Root {...props} />
+    </SheetContainerContext.Provider>
+  );
+};
 
 const SheetTrigger = SheetPrimitive.Trigger;
 
 const SheetClose = SheetPrimitive.Close;
 
-const SheetPortal = SheetPrimitive.Portal;
+const SheetPortal = (props: React.ComponentProps<typeof SheetPrimitive.Portal>) => {
+  const container = React.useContext(SheetContainerContext);
+  return <SheetPrimitive.Portal container={container} {...props} />;
+};
 
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(({ className, ...props }, ref) => (
+>(({ className, style, ...props }, ref) => (
   <SheetPrimitive.Overlay
+    ref={ref}
     className={cn(
       "absolute inset-0 z-50 bg-black/60 rounded-[3rem] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className,
     )}
+    style={{ ...(style ?? {}), position: "absolute" }}
     {...props}
-    ref={ref}
   />
 ));
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
@@ -52,10 +74,15 @@ interface SheetContentProps
     VariantProps<typeof sheetVariants> {}
 
 const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Content>, SheetContentProps>(
-  ({ side = "right", className, children, ...props }, ref) => (
+  ({ side = "right", className, children, style, ...props }, ref) => (
     <SheetPortal>
       <SheetOverlay />
-      <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+      <SheetPrimitive.Content
+        ref={ref}
+        className={cn(sheetVariants({ side }), className)}
+        style={{ ...(style ?? {}), position: "absolute" }}
+        {...props}
+      >
         <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-muted" />
         {children}
         <SheetPrimitive.Close className="absolute right-4 top-4 rounded-xl p-1 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
