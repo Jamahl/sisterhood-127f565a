@@ -2,7 +2,7 @@ import { useState } from "react";
 import MobileFrame from "@/components/MobileFrame";
 import BottomNav from "@/components/BottomNav";
 import HomeScreen from "@/components/screens/HomeScreen";
-import CircleScreen from "@/components/screens/CircleScreen";
+import SistersScreen from "@/components/screens/SistersScreen";
 import GiftsScreen from "@/components/screens/GiftsScreen";
 import NotificationsScreen from "@/components/screens/NotificationsScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
@@ -14,8 +14,8 @@ const Index = () => {
     switch (activeTab) {
       case "home":
         return <HomeScreen />;
-      case "circle":
-        return <CircleScreen />;
+      case "sisters":
+        return <SistersScreen />;
       case "gifts":
         return <GiftsScreen />;
       case "notifications":

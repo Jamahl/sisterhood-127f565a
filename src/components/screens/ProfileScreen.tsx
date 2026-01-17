@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight, Droplets } from "lucide-react";
+import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight, Droplets, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import CycleTracker from "../CycleTracker";
@@ -14,8 +14,9 @@ const ProfileScreen = () => {
   ];
 
   const menuItems = [
-    { label: "My Care Package Wishlist", icon: Gift },
+    { label: "My Gift Wishlist", icon: Gift },
     { label: "Cycle Settings", icon: Droplets, action: () => setCycleDialogOpen(true) },
+    { label: "My Address", icon: MapPin },
     { label: "Notification Preferences", icon: Settings },
     { label: "Privacy & Sharing", icon: Settings },
   ];
@@ -42,8 +43,8 @@ const ProfileScreen = () => {
           </button>
         </div>
         
-        <h2 className="font-serif text-xl font-bold text-foreground mt-4">Bella Rodriguez</h2>
-        <p className="text-muted-foreground text-sm">@bella_sisterhood</p>
+        <h2 className="font-serif text-xl font-bold text-foreground mt-4">Xen Rodriguez</h2>
+        <p className="text-muted-foreground text-sm">@xen_sisterhood</p>
         
         <div className="flex items-center justify-center gap-2 mt-3">
           <span className="text-2xl">😊</span>
