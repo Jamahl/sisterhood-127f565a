@@ -1,4 +1,4 @@
-import { ArrowLeft, Bell, Heart, Gift, MessageCircle, Droplets, Users } from "lucide-react";
+import { ArrowLeft, Bell, Heart, Gift, MessageCircle, Droplets, Users, Cake } from "lucide-react";
 import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
 import { useState } from "react";
@@ -16,6 +16,7 @@ const NotificationSettingsScreen = ({ onBack }: NotificationSettingsScreenProps)
     giftReminders: true,
     cycleReminders: false,
     newSisters: true,
+    birthdayReminders: true,
   });
 
   const handleToggle = (key: keyof typeof settings) => {
@@ -62,6 +63,12 @@ const NotificationSettingsScreen = ({ onBack }: NotificationSettingsScreenProps)
       icon: Users, 
       label: "New Sisters", 
       description: "When someone joins your sisterhood" 
+    },
+    { 
+      key: "birthdayReminders" as const, 
+      icon: Cake, 
+      label: "Birthday Reminders", 
+      description: "Upcoming sister birthdays" 
     },
   ];
 

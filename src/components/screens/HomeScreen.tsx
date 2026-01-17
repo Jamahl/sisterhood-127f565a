@@ -20,6 +20,9 @@ const HomeScreen = () => {
   const [highlightedPostId, setHighlightedPostId] = useState<string | null>(null);
   const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const { setSelectedPostId } = useNotifications();
+  
+  // User profile data - in production this would come from user context/database
+  const userName = "Xen";
 
   const sisterhoods: Sisterhood[] = [
     { id: "crimson-wave", name: "Crimson Wave", memberCount: 4, emoji: "🌊" },
@@ -142,7 +145,7 @@ const HomeScreen = () => {
       <div className="pt-4 pb-4 flex items-start justify-between">
         <div>
           <h1 className="font-serif text-2xl font-bold text-foreground">
-            {getGreeting()}, <span className="text-gradient">Xen</span> ✨
+            {getGreeting()}, <span className="text-gradient">{userName}</span> ✨
           </h1>
           <p className="text-muted-foreground mt-1">Your sisters are thinking of you</p>
         </div>

@@ -1,8 +1,12 @@
 import { useState, useRef } from "react";
-import { ArrowLeft, Camera, Check, User } from "lucide-react";
+import { ArrowLeft, Camera, Check, Cake, Calendar } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "@/hooks/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Calendar as CalendarComponent } from "../ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface EditProfileScreenProps {
   onBack: () => void;
@@ -14,6 +18,7 @@ const EditProfileScreen = ({ onBack }: EditProfileScreenProps) => {
     username: "xen_sisterhood",
     bio: "Living my best life with my sisters 💕",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop",
+    birthday: undefined as Date | undefined,
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -126,6 +131,39 @@ const EditProfileScreen = ({ onBack }: EditProfileScreenProps) => {
           />
           <p className="text-xs text-muted-foreground text-right mt-1">
             {profile.bio.length}/100
+          </p>
+        </div>
+
+        <div>
+          <label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+            <Cake className="w-4 h-4 text-primary" />
+            Birthday
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal rounded-xl",
+                  !profile.birthday && "text-muted-foreground"
+                )}
+              >
+                <Calendar className="mr-2 h-4 w-4" />
+                {profile.birthday ? format(profile.birthday, "MMMM d") : "Select your birthday"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <CalendarComponent
+                mode="single"
+                selected={profile.birthday}
+                onSelect={(date) => setProfile({ ...profile, birthday: date })}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+          <p className="text-xs text-muted-foreground mt-1">
+            Your sisters will be notified to send birthday wishes 🎂
           </p>
         </div>
       </div>
