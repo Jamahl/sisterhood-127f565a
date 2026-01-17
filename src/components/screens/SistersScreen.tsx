@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus, Search, MoreVertical, Link2, MessageCircle, Phone, UserPlus, UserMinus, Crown, X, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
 import CircleMember from "../CircleMember";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -298,17 +298,16 @@ const SistersScreen = () => {
         ))}
       </div>
 
-      {/* Create Sisterhood Dialog */}
-      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent className="max-w-sm mx-auto">
-          <DialogHeader>
-            <DialogTitle>Create a Sisterhood</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
+      {/* Create Sisterhood Bottom Sheet */}
+      <Drawer open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DrawerContent className="rounded-t-3xl">
+          <DrawerHeader>
+            <DrawerTitle>Create a Sisterhood</DrawerTitle>
+          </DrawerHeader>
+
+          <div className="px-4 pb-6 space-y-4">
             <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                Choose an emoji
-              </label>
+              <label className="text-sm font-medium text-foreground mb-2 block">Choose an emoji</label>
               <div className="flex flex-wrap gap-2">
                 {emojiOptions.map((emoji) => (
                   <button
@@ -316,9 +315,9 @@ const SistersScreen = () => {
                     onClick={() => setNewSisterhoodEmoji(emoji)}
                     className={cn(
                       "w-10 h-10 rounded-xl text-xl flex items-center justify-center transition-all",
-                      newSisterhoodEmoji === emoji 
-                        ? "bg-primary/20 ring-2 ring-primary" 
-                        : "bg-muted hover:bg-muted/80"
+                      newSisterhoodEmoji === emoji
+                        ? "bg-primary/20 ring-2 ring-primary"
+                        : "bg-muted hover:bg-muted/80",
                     )}
                   >
                     {emoji}
@@ -326,11 +325,9 @@ const SistersScreen = () => {
                 ))}
               </div>
             </div>
-            
+
             <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                Sisterhood name
-              </label>
+              <label className="text-sm font-medium text-foreground mb-2 block">Sisterhood name</label>
               <input
                 type="text"
                 placeholder="e.g. College Besties"
@@ -339,9 +336,9 @@ const SistersScreen = () => {
                 className="w-full h-12 px-4 bg-card rounded-2xl border border-border/50 focus:outline-none focus:ring-2 focus:ring-primary/30 text-foreground placeholder:text-muted-foreground"
               />
             </div>
-            
-            <Button 
-              variant="gradient" 
+
+            <Button
+              variant="gradient"
               className="w-full"
               onClick={handleCreateSisterhood}
               disabled={!newSisterhoodName.trim()}
@@ -349,23 +346,22 @@ const SistersScreen = () => {
               Create Sisterhood
             </Button>
           </div>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Invite Dialog */}
-      <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
-        <DialogContent className="max-w-sm mx-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+      {/* Invite Sisters Bottom Sheet */}
+      <Drawer open={showInviteDialog} onOpenChange={setShowInviteDialog}>
+        <DrawerContent className="rounded-t-3xl">
+          <DrawerHeader>
+            <DrawerTitle className="flex items-center gap-2">
               <span>{selectedSisterhood?.emoji || newSisterhoodEmoji}</span>
               Invite Sisters
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-3 py-4">
-            <p className="text-sm text-muted-foreground">
-              Share the invite link with your sisters
-            </p>
-            
+            </DrawerTitle>
+          </DrawerHeader>
+
+          <div className="px-4 pb-6 space-y-3">
+            <p className="text-sm text-muted-foreground">Share the invite link with your sisters</p>
+
             <button
               onClick={handleCopyLink}
               className="w-full flex items-center gap-4 p-4 bg-card rounded-2xl hover:bg-muted/50 transition-colors border border-border/50"
@@ -378,26 +374,26 @@ const SistersScreen = () => {
                 <p className="text-xs text-muted-foreground">Share anywhere</p>
               </div>
             </button>
-            
+
             <button
               onClick={handleShareWhatsApp}
               className="w-full flex items-center gap-4 p-4 bg-card rounded-2xl hover:bg-muted/50 transition-colors border border-border/50"
             >
-              <div className="p-2 bg-green-100 rounded-xl">
-                <MessageCircle className="w-5 h-5 text-green-600" />
+              <div className="p-2 bg-accent rounded-xl">
+                <MessageCircle className="w-5 h-5 text-primary" />
               </div>
               <div className="text-left flex-1">
                 <p className="font-medium text-foreground">WhatsApp</p>
                 <p className="text-xs text-muted-foreground">Send via WhatsApp</p>
               </div>
             </button>
-            
+
             <button
               onClick={handleShareSMS}
               className="w-full flex items-center gap-4 p-4 bg-card rounded-2xl hover:bg-muted/50 transition-colors border border-border/50"
             >
-              <div className="p-2 bg-blue-100 rounded-xl">
-                <Phone className="w-5 h-5 text-blue-600" />
+              <div className="p-2 bg-accent rounded-xl">
+                <Phone className="w-5 h-5 text-primary" />
               </div>
               <div className="text-left flex-1">
                 <p className="font-medium text-foreground">SMS</p>
@@ -405,8 +401,8 @@ const SistersScreen = () => {
               </div>
             </button>
           </div>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 };
