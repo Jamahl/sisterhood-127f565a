@@ -1,11 +1,19 @@
 import { useState } from "react";
-import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight, Droplets, MapPin } from "lucide-react";
+import { Settings, Edit2, Gift, Heart, Calendar, ChevronRight, Droplets, MapPin, Bell, Lock } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import CycleTracker from "../CycleTracker";
+import WishlistScreen from "./WishlistScreen";
+import AddressScreen from "./AddressScreen";
+import NotificationSettingsScreen from "./NotificationSettingsScreen";
+import PrivacyScreen from "./PrivacyScreen";
+import EditProfileScreen from "./EditProfileScreen";
+
+type SubScreen = null | "wishlist" | "address" | "notifications" | "privacy" | "editProfile";
 
 const ProfileScreen = () => {
   const [cycleDialogOpen, setCycleDialogOpen] = useState(false);
+  const [activeSubScreen, setActiveSubScreen] = useState<SubScreen>(null);
 
   const stats = [
     { icon: Heart, label: "Love Sent", value: "128" },
@@ -14,12 +22,29 @@ const ProfileScreen = () => {
   ];
 
   const menuItems = [
-    { label: "My Gift Wishlist", icon: Gift },
+    { label: "My Gift Wishlist", icon: Gift, action: () => setActiveSubScreen("wishlist") },
     { label: "Cycle Settings", icon: Droplets, action: () => setCycleDialogOpen(true) },
-    { label: "My Address", icon: MapPin },
-    { label: "Notification Preferences", icon: Settings },
-    { label: "Privacy & Sharing", icon: Settings },
+    { label: "My Address", icon: MapPin, action: () => setActiveSubScreen("address") },
+    { label: "Notification Preferences", icon: Bell, action: () => setActiveSubScreen("notifications") },
+    { label: "Privacy & Sharing", icon: Lock, action: () => setActiveSubScreen("privacy") },
   ];
+
+  // Render sub-screens
+  if (activeSubScreen === "wishlist") {
+    return <WishlistScreen onBack={() => setActiveSubScreen(null)} />;
+  }
+  if (activeSubScreen === "address") {
+    return <AddressScreen onBack={() => setActiveSubScreen(null)} />;
+  }
+  if (activeSubScreen === "notifications") {
+    return <NotificationSettingsScreen onBack={() => setActiveSubScreen(null)} />;
+  }
+  if (activeSubScreen === "privacy") {
+    return <PrivacyScreen onBack={() => setActiveSubScreen(null)} />;
+  }
+  if (activeSubScreen === "editProfile") {
+    return <EditProfileScreen onBack={() => setActiveSubScreen(null)} />;
+  }
 
   return (
     <div className="px-5 pb-24">
@@ -38,7 +63,10 @@ const ProfileScreen = () => {
             alt="Profile"
             className="w-24 h-24 rounded-3xl object-cover border-4 border-blush-light mx-auto"
           />
-          <button className="absolute -bottom-1 -right-1 p-2 bg-primary rounded-xl text-primary-foreground shadow-soft">
+          <button 
+            onClick={() => setActiveSubScreen("editProfile")}
+            className="absolute -bottom-1 -right-1 p-2 bg-primary rounded-xl text-primary-foreground shadow-soft"
+          >
             <Edit2 className="w-4 h-4" />
           </button>
         </div>

@@ -31,13 +31,80 @@ const MoodCard = ({ name, avatar, mood, moodEmoji, cycleDay, message, time, sist
   const [editText, setEditText] = useState("");
   const [hasReplied, setHasReplied] = useState(false);
 
-  const quickReplies = [
-    { text: "I'm here for you 💕", color: "bg-lavender/60" },
-    { text: "Thinking of you 💭", color: "bg-sage/40" },
-    { text: "You are loved 🤍", color: "bg-secondary/60" },
-    { text: "Sending hugs 🫂", color: "bg-peach/60" },
-    { text: "You've got this 💪", color: "bg-blush-light" },
-  ];
+  // Contextual quick replies based on mood
+  const getQuickReplies = () => {
+    const moodLower = mood.toLowerCase();
+    
+    // Positive moods
+    if (moodLower.includes('happy') || moodLower.includes('joy') || moodLower.includes('grateful') || moodLower.includes('excited')) {
+      return [
+        { text: "Smashing it! 🌟", color: "bg-sage/50" },
+        { text: "Love this energy ✨", color: "bg-lavender/60" },
+        { text: "You're glowing! 💫", color: "bg-peach/60" },
+        { text: "So proud of you 💕", color: "bg-blush-light" },
+      ];
+    }
+    
+    // Calm/peaceful moods
+    if (moodLower.includes('calm') || moodLower.includes('peaceful') || moodLower.includes('relaxed') || moodLower.includes('content')) {
+      return [
+        { text: "Love that vibe 🌸", color: "bg-lavender/60" },
+        { text: "You deserve it 💆‍♀️", color: "bg-sage/50" },
+        { text: "Keep glowing ✨", color: "bg-peach/60" },
+        { text: "So serene 🤍", color: "bg-secondary/60" },
+      ];
+    }
+    
+    // Productive/working hard moods
+    if (moodLower.includes('productive') || moodLower.includes('focus') || moodLower.includes('crushing') || moodLower.includes('working') || moodLower.includes('motivated')) {
+      return [
+        { text: "Go queen! 👑", color: "bg-sage/50" },
+        { text: "You're unstoppable 🔥", color: "bg-peach/60" },
+        { text: "Smashing it! 💪", color: "bg-blush-light" },
+        { text: "So inspiring ✨", color: "bg-lavender/60" },
+      ];
+    }
+    
+    // Tired/low energy moods
+    if (moodLower.includes('tired') || moodLower.includes('exhausted') || moodLower.includes('drained') || moodLower.includes('sleepy')) {
+      return [
+        { text: "Rest up, babe 💤", color: "bg-lavender/60" },
+        { text: "Take it easy 🫂", color: "bg-sage/50" },
+        { text: "You've earned it 💕", color: "bg-blush-light" },
+        { text: "Sending calm vibes 🌙", color: "bg-secondary/60" },
+      ];
+    }
+    
+    // Sad/low moods
+    if (moodLower.includes('sad') || moodLower.includes('low') || moodLower.includes('down') || moodLower.includes('upset') || moodLower.includes('crying')) {
+      return [
+        { text: "I'm here for you 💕", color: "bg-lavender/60" },
+        { text: "Sending hugs 🫂", color: "bg-sage/50" },
+        { text: "You are so loved 🤍", color: "bg-secondary/60" },
+        { text: "This will pass 💫", color: "bg-blush-light" },
+      ];
+    }
+    
+    // Anxious/stressed moods
+    if (moodLower.includes('anxious') || moodLower.includes('stress') || moodLower.includes('worried') || moodLower.includes('overwhelmed')) {
+      return [
+        { text: "Breathe, babe 🌿", color: "bg-sage/50" },
+        { text: "You've got this 💪", color: "bg-blush-light" },
+        { text: "Here if you need me 💕", color: "bg-lavender/60" },
+        { text: "One step at a time 🤍", color: "bg-secondary/60" },
+      ];
+    }
+    
+    // Default supportive replies
+    return [
+      { text: "Thinking of you 💭", color: "bg-lavender/60" },
+      { text: "You are loved 🤍", color: "bg-secondary/60" },
+      { text: "Sending love 💕", color: "bg-blush-light" },
+      { text: "Here for you 🫂", color: "bg-sage/50" },
+    ];
+  };
+
+  const quickReplies = getQuickReplies();
 
   const handleAddComment = (text?: string) => {
     const commentText = text || newComment.trim();
