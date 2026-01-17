@@ -7,6 +7,13 @@ import NotificationPanel from "../NotificationPanel";
 import { useNotifications } from "@/hooks/useNotifications";
 import { toast } from "@/hooks/use-toast";
 
+const getGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+};
+
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [showNotifications, setShowNotifications] = useState(false);
@@ -135,7 +142,7 @@ const HomeScreen = () => {
       <div className="pt-4 pb-4 flex items-start justify-between">
         <div>
           <h1 className="font-serif text-2xl font-bold text-foreground">
-            Good morning, <span className="text-gradient">Bella</span> ✨
+            {getGreeting()}, <span className="text-gradient">Xen</span> ✨
           </h1>
           <p className="text-muted-foreground mt-1">Your sisters are thinking of you</p>
         </div>

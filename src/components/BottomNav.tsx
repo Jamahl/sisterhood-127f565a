@@ -9,9 +9,9 @@ interface BottomNavProps {
 const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
   const tabs = [
     { id: "home", icon: Home, label: "Home" },
-    { id: "circle", icon: Users, label: "Circle" },
+    { id: "sisters", icon: Users, label: "Sisters" },
     { id: "gifts", icon: Gift, label: "Gifts" },
-    { id: "notifications", icon: Bell, label: "Alerts" },
+    { id: "notifications", icon: Bell, label: "Notifications" },
     { id: "profile", icon: User, label: "Profile" },
   ];
 
