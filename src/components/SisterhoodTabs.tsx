@@ -1,7 +1,23 @@
+/**
+ * ============================================================================
+ * SisterhoodTabs Component
+ * ============================================================================
+ * 
+ * Horizontal scrollable tabs for filtering by sisterhood.
+ * 
+ * @migration-note:
+ * - Replace with ScrollView + TouchableOpacity in React Native
+ * - Use react-native-tab-view for more complex tabs
+ */
+
 import { cn } from "@/lib/utils";
 import { Users } from "lucide-react";
 
-export interface Sisterhood {
+/**
+ * Simplified sisterhood interface for tab display
+ * Using local interface to avoid coupling to full Sisterhood type
+ */
+export interface SisterhoodTab {
   id: string;
   name: string;
   memberCount: number;
@@ -9,7 +25,7 @@ export interface Sisterhood {
 }
 
 interface SisterhoodTabsProps {
-  sisterhoods: Sisterhood[];
+  sisterhoods: SisterhoodTab[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
 }
