@@ -439,10 +439,10 @@ const LandingPage = () => {
             
             <div className="pt-8 space-y-4">
               <a 
-                href="mailto:hello@sisterhood.app"
+                href="mailto:support@sisterhood-app.com"
                 className="block font-body text-lg font-medium text-foreground hover:text-primary transition-colors"
               >
-                hello@sisterhood.app
+                support@sisterhood-app.com
               </a>
               <div className="flex justify-center gap-6 pt-4">
                 {["Twitter", "Instagram", "TikTok"].map((social) => (
