@@ -1,7 +1,7 @@
 # Landing Page Product Specification & Engineering Handoff
 
 > **File Location:** `src/pages/LandingPage.tsx`  
-> **Framework:** React + TypeScript + Tailwind CSS + Framer Motion  
+> **Framework:** React 18 + TypeScript + Vite + Tailwind CSS + Framer Motion  
 > **Last Updated:** January 2026
 
 ---
@@ -9,7 +9,7 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Technology Stack](#technology-stack)
+2. [Technology Stack (Exact Versions)](#technology-stack-exact-versions)
 3. [Color System](#color-system)
 4. [Typography](#typography)
 5. [Layout & Spacing](#layout--spacing)
@@ -18,6 +18,7 @@
 8. [Responsive Behavior](#responsive-behavior)
 9. [Assets & External Resources](#assets--external-resources)
 10. [Code Reference Map](#code-reference-map)
+11. [Migration Guide (Next.js / React Native)](#migration-guide)
 
 ---
 
@@ -38,15 +39,74 @@ A modern, Apple/Airbnb-inspired marketing landing page for the "Sisterhood" mobi
 
 ---
 
-## Technology Stack
+## Technology Stack (Exact Versions)
 
-| Technology | Version | Purpose | File Reference |
-|------------|---------|---------|----------------|
-| React | ^18.3.1 | UI Framework | `src/pages/LandingPage.tsx` |
-| TypeScript | - | Type safety | `src/pages/LandingPage.tsx` |
-| Tailwind CSS | - | Styling | `tailwind.config.ts`, `src/index.css` |
-| Framer Motion | ^11.18.2 | Animations | `src/pages/LandingPage.tsx` |
-| Lucide React | ^0.462.0 | Icons | `src/pages/LandingPage.tsx` |
+### Core Dependencies
+
+| Package | Version | Purpose | CDN/Registry |
+|---------|---------|---------|--------------|
+| `react` | `^18.3.1` | UI Framework | npm |
+| `react-dom` | `^18.3.1` | DOM Rendering | npm |
+| `react-router-dom` | `^6.30.1` | Client-side routing | npm |
+| `typescript` | (via Vite) | Type safety | npm |
+| `vite` | (build tool) | Dev server & bundler | npm |
+
+### Styling & Animation
+
+| Package | Version | Purpose | File Reference |
+|---------|---------|---------|----------------|
+| `tailwindcss` | (via postcss) | Utility-first CSS | `tailwind.config.ts` |
+| `tailwindcss-animate` | `^1.0.7` | Animation utilities | `tailwind.config.ts` plugins |
+| `framer-motion` | `^11.18.2` | Declarative animations | `src/pages/LandingPage.tsx` |
+| `class-variance-authority` | `^0.7.1` | Variant styling | `src/components/ui/button.tsx` |
+| `tailwind-merge` | `^2.6.0` | Class merging | `src/lib/utils.ts` |
+| `clsx` | `^2.1.1` | Conditional classes | `src/lib/utils.ts` |
+
+### Icons
+
+| Package | Version | Icons Used |
+|---------|---------|------------|
+| `lucide-react` | `^0.462.0` | `Menu`, `X`, `Heart`, `Users`, `Bell`, `Gift` |
+
+### Fonts (External)
+
+| Font | Source | Weight | Usage |
+|------|--------|--------|-------|
+| DM Serif Display | Google Fonts | 400 | Headings |
+| Inter | Google Fonts | 400, 500, 600 | Body text |
+
+```html
+<!-- Font Import URL -->
+https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap
+```
+
+### Build Configuration
+
+**Vite Config:** `vite.config.ts`
+```ts
+// Key settings
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: { "@": path.resolve(__dirname, "./src") }
+  }
+})
+```
+
+**Tailwind Config:** `tailwind.config.ts`
+- Dark mode: `class`
+- Content paths: `./pages/**/*.{ts,tsx}`, `./components/**/*.{ts,tsx}`, `./app/**/*.{ts,tsx}`, `./src/**/*.{ts,tsx}`
+- Plugins: `tailwindcss-animate`
+
+**PostCSS Config:** `postcss.config.js`
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  }
+}
+```
 
 ---
 
@@ -323,7 +383,7 @@ p-8 rounded-3xl bg-card border border-border/50 hover:shadow-lg transition-shado
            Contact Us (title)
          Description text...
 
-       hello@sisterhood.app
+       support@sisterhood-app.com
 
     Twitter   Instagram   TikTok
 ```
@@ -469,9 +529,200 @@ https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;
 | Custom Components | `src/index.css` | 96-129 |
 | Animations | `src/index.css` | 131-176 |
 | Tailwind Colors | `tailwind.config.ts` | 20-82 |
-| Tailwind Fonts | `tailwind.config.ts` | 16-19 |
-| Routing | `src/App.tsx` | Route `/` points to `LandingPage` |
-| Button Component | `src/components/ui/button.tsx` | Used for CTA buttons |
+| Fonts Config | `tailwind.config.ts` | 84-87 |
+
+---
+
+## Migration Guide
+
+### Next.js Migration
+
+If migrating to Next.js App Router, follow these steps:
+
+#### 1. Install Dependencies
+
+```bash
+npm install next react react-dom framer-motion lucide-react tailwindcss postcss autoprefixer
+npm install -D @types/react @types/react-dom typescript
+```
+
+#### 2. File Structure
+
+```
+app/
+├── layout.tsx          # Root layout with fonts
+├── page.tsx            # Landing page component
+├── globals.css         # CSS variables from src/index.css
+components/
+├── LandingPage.tsx     # Main component (add 'use client')
+lib/
+├── utils.ts            # cn() utility
+```
+
+#### 3. Key Code Changes
+
+**Add 'use client' directive:**
+```tsx
+// components/LandingPage.tsx
+'use client';
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+// ... rest of imports
+```
+
+**Font Loading (next/font):**
+```tsx
+// app/layout.tsx
+import { DM_Serif_Display, Inter } from 'next/font/google';
+
+const dmSerifDisplay = DM_Serif_Display({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-display',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**Replace inline font classes:**
+```css
+/* globals.css */
+.font-display { font-family: var(--font-display), serif; }
+.font-body { font-family: var(--font-body), sans-serif; }
+```
+
+**Image Optimization (optional):**
+```tsx
+import Image from 'next/image';
+
+// Replace <img> with <Image>
+<Image 
+  src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+  alt="Download on the App Store"
+  width={140}
+  height={56}
+  className="h-14 w-auto"
+/>
+```
+
+#### 4. Environment Differences
+
+| Feature | Vite (Current) | Next.js |
+|---------|---------------|---------|
+| Routing | React Router | App Router (file-based) |
+| Fonts | Inline @import | next/font |
+| Images | Native `<img>` | `<Image>` component |
+| Client state | Always client | Add 'use client' |
+| Path aliases | `@/` via vite.config | `@/` via tsconfig |
+
+---
+
+### React Native / Expo Migration
+
+For native mobile implementation:
+
+#### 1. Core Mapping
+
+| Web Concept | React Native Equivalent |
+|-------------|------------------------|
+| `<div>` | `<View>` |
+| `<span>`, `<p>` | `<Text>` |
+| `<img>` | `<Image>` (require local) or `{uri: '...'}` |
+| `<button>` | `<TouchableOpacity>` or `<Pressable>` |
+| Tailwind classes | NativeWind or StyleSheet |
+| `framer-motion` | `react-native-reanimated` + `moti` |
+| `lucide-react` | `lucide-react-native` |
+
+#### 2. Animation Library Swap
+
+```tsx
+// Web (framer-motion)
+<motion.div
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+>
+
+// React Native (moti)
+import { MotiView } from 'moti';
+
+<MotiView
+  from={{ opacity: 0, translateY: 50 }}
+  animate={{ opacity: 1, translateY: 0 }}
+  transition={{ type: 'timing', duration: 800 }}
+>
+```
+
+#### 3. Styling with NativeWind
+
+```tsx
+// Install NativeWind for Tailwind-like syntax
+npm install nativewind
+npm install -D tailwindcss
+
+// Use same class names
+<View className="flex-1 bg-background px-6 py-20">
+  <Text className="font-display text-5xl text-foreground">
+    Your sisters are here
+  </Text>
+</View>
+```
+
+#### 4. Font Loading
+
+```tsx
+// app.json (Expo)
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/DMSerifDisplay-Regular.ttf", "./assets/fonts/Inter-Variable.ttf"]
+        }
+      ]
+    ]
+  }
+}
+```
+
+#### 5. Color Tokens
+
+Copy CSS variables to a theme file:
+
+```ts
+// theme/colors.ts
+export const colors = {
+  background: '#F9F7F4',      // hsl(80 30% 96%)
+  foreground: '#3D4336',      // hsl(90 15% 25%)
+  primary: '#A0AB89',         // hsl(78 18% 60%)
+  primaryForeground: '#FFFFFF',
+  secondary: '#EFC0BC',       // hsl(5 55% 84%)
+  muted: '#EAE8E3',           // hsl(80 20% 92%)
+  mutedForeground: '#757569', // hsl(90 10% 45%)
+  accent: '#F6E5E7',          // hsl(350 35% 93%)
+  border: '#E0DDD6',          // hsl(80 20% 88%)
+  blush: '#EFC0BC',
+  blushLight: '#F6E5E7',
+  coral: '#E8998D',
+  sage: '#A0AB89',
+  sageLight: '#C8D1B8',
+  sageDark: '#7A8A65',
+  cream: '#FBF9F4',
+};
+```
 
 ---
 
@@ -479,17 +730,19 @@ https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;
 
 ### State Management
 
-```tsx
-const [isMenuOpen, setIsMenuOpen] = useState(false);    // Mobile menu toggle
-const [activeSection, setActiveSection] = useState("home"); // Active nav highlight
-const [scrolled, setScrolled] = useState(false);        // Nav background on scroll
+```ts
+const [isMenuOpen, setIsMenuOpen] = useState(false);    // Mobile nav toggle
+const [activeSection, setActiveSection] = useState("home"); // Current section
+const [scrolled, setScrolled] = useState(false);        // Nav background state
 ```
 
 ### Scroll Detection
 
-```tsx
+```ts
 useEffect(() => {
-  const handleScroll = () => setScrolled(window.scrollY > 50);
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 50);
+  };
   window.addEventListener("scroll", handleScroll);
   return () => window.removeEventListener("scroll", handleScroll);
 }, []);
@@ -497,11 +750,14 @@ useEffect(() => {
 
 ### Smooth Scroll Navigation
 
-```tsx
+```ts
 const scrollToSection = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  setActiveSection(id);
-  setIsMenuOpen(false);
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+    setActiveSection(id);
+    setIsMenuOpen(false);
+  }
 };
 ```
 
@@ -509,18 +765,14 @@ const scrollToSection = (id: string) => {
 
 ## Quality Checklist
 
-- [ ] All colors use semantic tokens (no hardcoded hex values in components)
-- [ ] All text uses `.font-display` or `.font-body` classes
-- [ ] All interactive elements have hover/tap animations
-- [ ] Mobile navigation works correctly
-- [ ] Scroll behavior is smooth
-- [ ] All external images load (App Store, Play Store badges)
-- [ ] iPhone mockup accurately represents HomeScreen
-- [ ] Footer links are accessible
-- [ ] Page is fully responsive from 320px to 1920px+
-- [ ] Animations are performant (60fps)
-- [ ] Background blur effects render correctly
-
----
-
-*End of Landing Page Product Specification*
+- [ ] All fonts loading correctly (DM Serif Display, Inter)
+- [ ] Smooth scroll navigation working
+- [ ] Mobile menu animates correctly
+- [ ] iPhone mockup matches actual app HomeScreen
+- [ ] App Store/Play Store badges display properly
+- [ ] Floating animations run smoothly
+- [ ] Section scroll-into-view animations trigger
+- [ ] Responsive breakpoints work correctly
+- [ ] Colors match design system tokens
+- [ ] Hover states on interactive elements
+- [ ] Accessibility: proper alt texts, button labels
