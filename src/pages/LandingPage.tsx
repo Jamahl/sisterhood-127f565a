@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Apple, Smartphone, Menu, X, Heart, Users, Bell, Gift } from "lucide-react";
+import { Menu, X, Heart, Users, Bell, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const LandingPage = () => {
@@ -27,6 +27,13 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      {/* Google Fonts for better typography */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap');
+        .font-display { font-family: 'DM Serif Display', serif; }
+        .font-body { font-family: 'Inter', sans-serif; }
+      `}</style>
+
       {/* Navigation */}
       <motion.nav
         initial={{ y: -100 }}
@@ -44,7 +51,7 @@ const LandingPage = () => {
               <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center">
                 <Heart className="w-5 h-5 text-primary-foreground" fill="currentColor" />
               </div>
-              <span className="font-serif text-xl font-semibold text-foreground">Sisterhood</span>
+              <span className="font-display text-xl text-foreground">Sisterhood</span>
             </motion.div>
 
             {/* Desktop Nav */}
@@ -53,7 +60,7 @@ const LandingPage = () => {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className={`text-sm font-medium capitalize transition-colors ${
+                  className={`font-body text-sm font-medium capitalize transition-colors ${
                     activeSection === item ? "text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -62,7 +69,7 @@ const LandingPage = () => {
               ))}
               <Button
                 onClick={() => scrollToSection("download")}
-                className="rounded-full px-6 bg-primary hover:bg-sage-dark text-primary-foreground"
+                className="rounded-full px-6 bg-primary hover:bg-sage-dark text-primary-foreground font-body"
               >
                 Download
               </Button>
@@ -92,14 +99,14 @@ const LandingPage = () => {
                   <button
                     key={item}
                     onClick={() => scrollToSection(item)}
-                    className="text-left text-lg font-medium capitalize py-2"
+                    className="text-left font-body text-lg font-medium capitalize py-2"
                   >
                     {item === "contact" ? "Contact Us" : item}
                   </button>
                 ))}
                 <Button
                   onClick={() => scrollToSection("download")}
-                  className="rounded-full bg-primary hover:bg-sage-dark text-primary-foreground mt-2"
+                  className="rounded-full bg-primary hover:bg-sage-dark text-primary-foreground mt-2 font-body"
                 >
                   Download
                 </Button>
@@ -124,49 +131,51 @@ const LandingPage = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/50 border border-border">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-sm font-medium text-muted-foreground">Now available on iOS & Android</span>
+              <span className="font-body text-sm font-medium text-muted-foreground">Now available on iOS & Android</span>
             </div>
             
-            <h1 className="text-5xl lg:text-7xl font-serif font-bold text-foreground leading-tight">
+            <h1 className="font-display text-5xl lg:text-7xl text-foreground leading-tight">
               Your sisters
               <br />
               <span className="text-primary">are here</span>
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
+            <p className="font-body text-lg text-muted-foreground max-w-md leading-relaxed">
               A space where women support each other through every cycle, every mood, every moment. Connect, share, and care — together.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
+              {/* Official App Store Badge */}
               <motion.a
                 href="#"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 px-6 py-4 bg-foreground text-background rounded-2xl hover:bg-foreground/90 transition-colors"
+                className="inline-block"
               >
-                <Apple className="w-7 h-7" />
-                <div className="text-left">
-                  <div className="text-xs opacity-80">Download on the</div>
-                  <div className="text-sm font-semibold">App Store</div>
-                </div>
+                <img 
+                  src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" 
+                  alt="Download on the App Store" 
+                  className="h-14"
+                />
               </motion.a>
               
+              {/* Official Google Play Badge */}
               <motion.a
                 href="#"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 px-6 py-4 bg-foreground text-background rounded-2xl hover:bg-foreground/90 transition-colors"
+                className="inline-block"
               >
-                <PlayStoreIcon />
-                <div className="text-left">
-                  <div className="text-xs opacity-80">Get it on</div>
-                  <div className="text-sm font-semibold">Google Play</div>
-                </div>
+                <img 
+                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
+                  alt="Get it on Google Play" 
+                  className="h-14"
+                />
               </motion.a>
             </div>
           </motion.div>
 
-          {/* Phone Mockup */}
+          {/* Phone Mockup - Accurate HomeScreen */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -174,84 +183,120 @@ const LandingPage = () => {
             className="relative flex justify-center lg:justify-end"
           >
             <div className="relative">
-              {/* Phone Frame */}
-              <div className="w-72 lg:w-80 rounded-[3rem] bg-foreground/5 p-3 shadow-2xl">
-                <div className="rounded-[2.5rem] overflow-hidden bg-background border border-border/50">
+              {/* iPhone Frame */}
+              <div className="w-[320px] lg:w-[360px] rounded-[3rem] bg-foreground/10 p-3 shadow-2xl border border-foreground/5">
+                <div className="rounded-[2.5rem] overflow-hidden bg-background border border-border/30">
                   {/* Status Bar */}
-                  <div className="px-6 py-3 flex items-center justify-between">
-                    <span className="text-xs font-medium">9:41</span>
-                    <div className="w-20 h-6 rounded-full bg-foreground" />
+                  <div className="px-8 pt-3 pb-2 flex items-center justify-between">
+                    <span className="font-body text-xs font-semibold">9:41</span>
+                    <div className="w-28 h-7 rounded-full bg-foreground" />
                     <div className="flex items-center gap-1">
-                      <div className="w-4 h-2 rounded-sm bg-foreground/60" />
+                      <div className="w-6 h-3 rounded-sm bg-foreground/70" />
                     </div>
                   </div>
                   
-                  {/* App Content */}
-                  <div className="px-5 pb-6 pt-2 space-y-5">
+                  {/* App Content - Matches HomeScreen */}
+                  <div className="px-5 pb-4 pt-3 space-y-4" style={{ background: 'linear-gradient(180deg, hsl(80 30% 96%) 0%, hsl(350 35% 96%) 100%)' }}>
                     {/* Header */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-start justify-between">
                       <div>
-                        <h2 className="text-lg font-serif font-semibold">Good evening, Maya ✨</h2>
-                        <p className="text-xs text-muted-foreground">Your sisters are thinking of you</p>
+                        <h2 className="font-display text-xl">
+                          Good evening, <span className="text-primary">Maya</span> ✨
+                        </h2>
+                        <p className="font-body text-xs text-muted-foreground mt-0.5">Your sisters are thinking of you</p>
                       </div>
-                      <div className="relative">
+                      <div className="relative p-2">
                         <Bell className="w-5 h-5 text-muted-foreground" />
-                        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-coral text-[10px] flex items-center justify-center text-white">2</span>
+                        <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-coral text-[10px] flex items-center justify-center text-white font-body font-semibold">2</span>
                       </div>
                     </div>
 
-                    {/* Tabs */}
-                    <div className="flex gap-2">
-                      <div className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-medium flex items-center gap-1.5">
-                        <Users className="w-3 h-3" />
+                    {/* Sisterhood Tabs */}
+                    <div className="flex gap-2 overflow-hidden">
+                      <div className="px-4 py-2.5 rounded-full bg-primary text-primary-foreground text-xs font-body font-semibold flex items-center gap-1.5 whitespace-nowrap">
+                        <Users className="w-3.5 h-3.5" />
                         All Sisters
                       </div>
-                      <div className="px-4 py-2 rounded-full bg-muted text-muted-foreground text-xs font-medium">
+                      <div className="px-4 py-2.5 rounded-full bg-card border border-border text-muted-foreground text-xs font-body font-medium whitespace-nowrap">
                         🌊 Crimson Wave (4)
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-sage-light flex items-center justify-center">
+                        <span className="text-sm">🌿</span>
                       </div>
                     </div>
 
-                    {/* Mood Card */}
-                    <div className="p-4 rounded-3xl bg-sage-light/30 border border-sage-light/50">
-                      <p className="text-sm font-medium mb-3">How are you feeling today?</p>
+                    {/* Mood Status Card */}
+                    <div className="p-5 rounded-3xl bg-sage-light/40 border border-sage-light/60 backdrop-blur-sm">
+                      <p className="font-display text-base mb-4">How are you feeling today?</p>
+                      <div className="grid grid-cols-4 gap-2 mb-2">
+                        {[
+                          { emoji: "😊", label: "Happy", active: true },
+                          { emoji: "😌", label: "Calm", active: false },
+                          { emoji: "😔", label: "Low", active: false },
+                          { emoji: "😤", label: "Moody", active: false },
+                        ].map((mood, i) => (
+                          <div 
+                            key={i} 
+                            className={`aspect-square rounded-2xl flex flex-col items-center justify-center ${
+                              mood.active ? 'bg-sage-light border-2 border-primary/30' : 'bg-card/80'
+                            }`}
+                          >
+                            <span className="text-2xl">{mood.emoji}</span>
+                            <span className="font-body text-[10px] mt-1 text-muted-foreground">{mood.label}</span>
+                          </div>
+                        ))}
+                      </div>
                       <div className="grid grid-cols-4 gap-2">
-                        {["😊", "😌", "😔", "😤"].map((emoji, i) => (
-                          <div key={i} className={`aspect-square rounded-2xl flex flex-col items-center justify-center text-xl ${i === 0 ? 'bg-sage-light' : 'bg-muted/50'}`}>
-                            {emoji}
-                            <span className="text-[9px] mt-0.5 text-muted-foreground">
-                              {["Happy", "Calm", "Low", "Moody"][i]}
-                            </span>
+                        {[
+                          { emoji: "😴", label: "Tired" },
+                          { emoji: "🥰", label: "Grateful" },
+                          { emoji: "🥺", label: "Emotional" },
+                          { emoji: "💪", label: "Strong" },
+                        ].map((mood, i) => (
+                          <div key={i} className="aspect-square rounded-2xl bg-card/80 flex flex-col items-center justify-center">
+                            <span className="text-2xl">{mood.emoji}</span>
+                            <span className="font-body text-[10px] mt-1 text-muted-foreground">{mood.label}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Sister Update */}
-                    <div>
-                      <h3 className="text-sm font-semibold mb-3">All Sisters Updates</h3>
-                      <div className="p-4 rounded-2xl bg-card border border-border/50">
-                        <div className="flex items-start gap-3">
-                          <div className="relative">
-                            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-lg">
-                              👩🏽
-                            </div>
-                            <span className="absolute -bottom-0.5 -right-0.5 text-sm">😔</span>
+                    {/* Feed Header */}
+                    <h3 className="font-display text-base pt-1">All Sisters Updates</h3>
+                    
+                    {/* Sister Update Card */}
+                    <div className="p-4 rounded-2xl bg-card border border-border/50 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="relative flex-shrink-0">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blush to-secondary flex items-center justify-center text-xl overflow-hidden">
+                            <img 
+                              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" 
+                              alt="Sarah" 
+                              className="w-full h-full object-cover"
+                            />
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-semibold font-serif">Sarah</span>
-                              <span className="text-[10px] text-muted-foreground">2h ago</span>
-                            </div>
-                            <p className="text-xs text-muted-foreground">Feeling low today • Day 2</p>
-                            <p className="text-xs mt-1">Could really use some chocolate 🍫</p>
+                          <span className="absolute -bottom-1 -right-1 text-base bg-background rounded-full">😔</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-display text-sm">Sarah</span>
+                            <span className="font-body text-[10px] text-muted-foreground flex-shrink-0">2h ago</span>
                           </div>
+                          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                            <span className="font-body text-xs text-muted-foreground">Feeling low today</span>
+                            <span className="text-muted-foreground">•</span>
+                            <span className="font-body text-[10px] px-2 py-0.5 rounded-full bg-muted">Day 2</span>
+                            <span className="text-muted-foreground">•</span>
+                            <span className="font-body text-[10px] px-2 py-0.5 rounded-full bg-muted">Crimson Wave</span>
+                          </div>
+                          <p className="font-body text-xs mt-2 text-foreground/90">Could really use some chocolate and a good movie recommendation 🍫</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Bottom Nav */}
-                  <div className="px-6 py-4 border-t border-border/50 flex justify-around">
+                  {/* Bottom Navigation */}
+                  <div className="px-4 py-3 bg-background border-t border-border/50 flex justify-around">
                     {[
                       { icon: "🏠", label: "Home", active: true },
                       { icon: "👯", label: "Sisters", active: false },
@@ -259,9 +304,9 @@ const LandingPage = () => {
                       { icon: "🔔", label: "Notifs", active: false },
                       { icon: "👤", label: "Profile", active: false },
                     ].map((item, i) => (
-                      <div key={i} className={`flex flex-col items-center gap-0.5 ${item.active ? 'text-primary' : 'text-muted-foreground'}`}>
-                        <span className="text-lg">{item.icon}</span>
-                        <span className="text-[9px]">{item.label}</span>
+                      <div key={i} className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl ${item.active ? 'bg-sage-light/50' : ''}`}>
+                        <span className="text-xl">{item.icon}</span>
+                        <span className={`font-body text-[9px] ${item.active ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -272,7 +317,7 @@ const LandingPage = () => {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl bg-blush flex items-center justify-center shadow-lg"
+                className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl bg-blush flex items-center justify-center shadow-lg border border-blush-light"
               >
                 <Heart className="w-8 h-8 text-coral" fill="currentColor" />
               </motion.div>
@@ -280,7 +325,7 @@ const LandingPage = () => {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -bottom-2 -left-6 w-14 h-14 rounded-2xl bg-sage-light flex items-center justify-center shadow-lg"
+                className="absolute -bottom-2 -left-6 w-14 h-14 rounded-2xl bg-sage-light flex items-center justify-center shadow-lg border border-sage/30"
               >
                 <Gift className="w-7 h-7 text-sage-dark" />
               </motion.div>
@@ -295,9 +340,9 @@ const LandingPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { icon: "🌸", label: "Cycle Tracking", desc: "Know your rhythm" },
-              { icon: "💝", label: "Care Packages", desc: "Send love instantly" },
-              { icon: "👯‍♀️", label: "Sister Circles", desc: "Your trusted crew" },
-              { icon: "✨", label: "Mood Updates", desc: "Share how you feel" },
+              { icon: "💝", label: "Send Gifts", desc: "Recognise your sisters with small gestures" },
+              { icon: "👯‍♀️", label: "Sister Circles", desc: "Your sisterhood" },
+              { icon: "✨", label: "Mood Updates", desc: "Get support and affirmations from your sisters" },
             ].map((feature, i) => (
               <motion.div
                 key={i}
@@ -308,8 +353,8 @@ const LandingPage = () => {
                 className="text-center"
               >
                 <div className="text-4xl mb-3">{feature.icon}</div>
-                <h3 className="font-semibold text-foreground mb-1">{feature.label}</h3>
-                <p className="text-sm text-muted-foreground">{feature.desc}</p>
+                <h3 className="font-display text-lg text-foreground mb-1">{feature.label}</h3>
+                <p className="font-body text-sm text-muted-foreground">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -327,13 +372,13 @@ const LandingPage = () => {
             viewport={{ once: true }}
             className="max-w-2xl mx-auto text-center space-y-6"
           >
-            <span className="text-primary font-medium">About Sisterhood</span>
-            <h2 className="text-4xl lg:text-5xl font-serif font-bold text-foreground">
+            <span className="font-body text-primary font-medium">About Sisterhood</span>
+            <h2 className="font-display text-4xl lg:text-5xl text-foreground">
               Built by women,
               <br />
               for women
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="font-body text-lg text-muted-foreground leading-relaxed">
               We believe that supporting each other shouldn't be complicated. Sisterhood is a safe, 
               intimate space where you can share your cycle, your mood, and receive care from 
               the women who matter most — your sisters, your friends, your circle.
@@ -367,8 +412,8 @@ const LandingPage = () => {
                 className="p-8 rounded-3xl bg-card border border-border/50 hover:shadow-lg transition-shadow"
               >
                 <div className="text-4xl mb-4">{card.icon}</div>
-                <h3 className="text-xl font-serif font-semibold mb-2">{card.title}</h3>
-                <p className="text-muted-foreground">{card.desc}</p>
+                <h3 className="font-display text-xl mb-2">{card.title}</h3>
+                <p className="font-body text-muted-foreground">{card.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -384,18 +429,18 @@ const LandingPage = () => {
             viewport={{ once: true }}
             className="max-w-xl mx-auto text-center space-y-6"
           >
-            <span className="text-primary font-medium">Get in Touch</span>
-            <h2 className="text-4xl lg:text-5xl font-serif font-bold text-foreground">
+            <span className="font-body text-primary font-medium">Get in Touch</span>
+            <h2 className="font-display text-4xl lg:text-5xl text-foreground">
               Contact Us
             </h2>
-            <p className="text-muted-foreground">
+            <p className="font-body text-muted-foreground">
               Have questions, feedback, or just want to say hi? We'd love to hear from you.
             </p>
             
             <div className="pt-8 space-y-4">
               <a 
                 href="mailto:hello@sisterhood.app"
-                className="block text-lg font-medium text-foreground hover:text-primary transition-colors"
+                className="block font-body text-lg font-medium text-foreground hover:text-primary transition-colors"
               >
                 hello@sisterhood.app
               </a>
@@ -404,7 +449,7 @@ const LandingPage = () => {
                   <a
                     key={social}
                     href="#"
-                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+                    className="font-body text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
                   >
                     {social}
                   </a>
@@ -427,38 +472,40 @@ const LandingPage = () => {
             viewport={{ once: true }}
             className="text-center space-y-8"
           >
-            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-foreground">
+            <h2 className="font-display text-5xl lg:text-6xl text-foreground">
               Join your sisterhood
             </h2>
-            <p className="text-xl text-muted-foreground max-w-md mx-auto">
+            <p className="font-body text-xl text-muted-foreground max-w-md mx-auto">
               Download now and start supporting the women who matter most.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+              {/* Official App Store Badge */}
               <motion.a
                 href="#"
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 px-8 py-5 bg-foreground text-background rounded-2xl hover:bg-foreground/90 transition-colors"
+                className="inline-block"
               >
-                <Apple className="w-8 h-8" />
-                <div className="text-left">
-                  <div className="text-xs opacity-80">Download on the</div>
-                  <div className="text-base font-semibold">App Store</div>
-                </div>
+                <img 
+                  src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" 
+                  alt="Download on the App Store" 
+                  className="h-16"
+                />
               </motion.a>
               
+              {/* Official Google Play Badge */}
               <motion.a
                 href="#"
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 px-8 py-5 bg-foreground text-background rounded-2xl hover:bg-foreground/90 transition-colors"
+                className="inline-block"
               >
-                <PlayStoreIcon />
-                <div className="text-left">
-                  <div className="text-xs opacity-80">Get it on</div>
-                  <div className="text-base font-semibold">Google Play</div>
-                </div>
+                <img 
+                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
+                  alt="Get it on Google Play" 
+                  className="h-16"
+                />
               </motion.a>
             </div>
           </motion.div>
@@ -473,16 +520,16 @@ const LandingPage = () => {
               <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
                 <Heart className="w-4 h-4 text-primary-foreground" fill="currentColor" />
               </div>
-              <span className="font-serif font-semibold text-foreground">Sisterhood</span>
+              <span className="font-display text-foreground">Sisterhood</span>
             </div>
             
-            <p className="text-sm text-muted-foreground">
+            <p className="font-body text-sm text-muted-foreground">
               © 2026 Sisterhood. Made with love.
             </p>
             
             <div className="flex gap-6">
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</a>
+              <a href="#" className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
+              <a href="#" className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</a>
             </div>
           </div>
         </div>
@@ -490,12 +537,5 @@ const LandingPage = () => {
     </div>
   );
 };
-
-// Google Play Store Icon Component
-const PlayStoreIcon = () => (
-  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 9.99l-2.302 2.302-8.634-8.634z"/>
-  </svg>
-);
 
 export default LandingPage;
